@@ -3,10 +3,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Owner {
-    _id: Option<ObjectId>,
-    name: String,
-    email: String,
-    phone: String,
+    pub _id: Option<ObjectId>,
+    pub name: String,
+    pub email: String,
+    pub phone: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -18,9 +18,9 @@ pub enum Status {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Project {
-    _id: Option<ObjectId>,
-    owner_id: ObjectId,
-    name: String,
-    description: String,
-    status: Status,
+    pub _id: Option<ObjectId>,
+    pub owner_id: ObjectId,
+    pub name: String,
+    pub description: String,
+    pub status: Status,
 }

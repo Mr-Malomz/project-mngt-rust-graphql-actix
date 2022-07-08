@@ -9,7 +9,7 @@ pub struct Owner {
     pub phone: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Status {
     NotStarted,
     InProgress,

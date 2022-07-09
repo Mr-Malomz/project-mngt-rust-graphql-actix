@@ -1,20 +1,22 @@
+use std::io::Error;
+
 use juniper::graphql_object;
 use mongodb::results::CollectionType;
 
-use crate::{config::mongo, models::schema_graphql::{Owner, CreateOwner}};
+use crate::{config::mongo, models::schema_graphql::{OwnerQL}};
 
-struct Context {
-    db: mongo::MongoDB,
+struct Database {
+    db: mongo::DBMongo,
 }
 
 
-impl juniper::Context for Context {}
+impl juniper::Context for Database {}
 
 struct Query {}
 
-// #[graphql_object(context = Context)]
+// #[graphql_object(context = Database)]
 // impl Query {
-//      fn create_owner(context: &Context, input: CreateOwner) -> Option<&Owner> {
-//         context.db.create_owner()
+//      async fn get_owners(&self, context: &Database) -> Result<Vec<OwnerQL>, Error> {
+//         context.db.get_owners().await
 //     }
 // }

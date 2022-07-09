@@ -9,11 +9,11 @@ use mongodb::{
 
 use crate::models::project_model::{Owner, Project};
 
-pub struct MongoDB {
+pub struct DBMongo {
     db: Database,
 }
 
-impl MongoDB {
+impl DBMongo {
     pub async fn init() -> Self {
         dotenv().ok();
         let uri = match env::var("MONGOURI") {
@@ -24,7 +24,7 @@ impl MongoDB {
             .await
             .expect("error connecting to database");
         let db = client.database("projectMngt");
-        MongoDB { db }
+        DBMongo { db }
     }
 
     fn colHelper<T>(dataSource: &Self, collectionName: &str) -> Collection<T> {
@@ -40,7 +40,7 @@ impl MongoDB {
             phone: new_owner.phone.clone(),
         };
 
-        let col = MongoDB::colHelper::<Owner>(&self, "owner");
+        let col = DBMongo::colHelper::<Owner>(&self, "owner");
 
         let data = col
             .insert_one(new_doc, None)
@@ -58,8 +58,8 @@ impl MongoDB {
         Ok(new_owner)
     }
 
-    async fn get_owners(&self) -> Result<Vec<Owner>, Error> {
-        let col = MongoDB::colHelper::<Owner>(&self, "owner");
+    pub async fn get_owners(&self) -> Result<Vec<Owner>, Error> {
+        let col = DBMongo::colHelper::<Owner>(&self, "owner");
 
         let mut cursors = col
             .find(None, None)
@@ -80,11 +80,11 @@ impl MongoDB {
         Ok(owners)
     }
 
-    async fn single_owner(&self, id: &String) -> Result<Owner, Error> {
+    pub async fn single_owner(&self, id: &String) -> Result<Owner, Error> {
         let obj_id = ObjectId::parse_str(id).unwrap();
         let filter = doc! {"_id": obj_id};
 
-        let col = MongoDB::colHelper::<Owner>(&self, "owner");
+        let col = DBMongo::colHelper::<Owner>(&self, "owner");
 
         let owner_detail = col
             .find_one(filter, None)
@@ -105,7 +105,7 @@ impl MongoDB {
             status: new_project.status.clone(),
         };
 
-        let col = MongoDB::colHelper::<Project>(&self, "project");
+        let col = DBMongo::colHelper::<Project>(&self, "project");
 
         let data = col
             .insert_one(new_doc, None)
@@ -124,8 +124,8 @@ impl MongoDB {
         Ok(new_project)
     }
 
-    async fn get_projects(&self) -> Result<Vec<Project>, Error> {
-        let col = MongoDB::colHelper::<Project>(&self, "project");
+    pub async fn get_projects(&self) -> Result<Vec<Project>, Error> {
+        let col = DBMongo::colHelper::<Project>(&self, "project");
 
         let mut cursors = col
             .find(None, None)
@@ -146,11 +146,11 @@ impl MongoDB {
         Ok(projects)
     }
 
-    async fn single_project(&self, id: &String) -> Result<Project, Error> {
+    pub async fn single_project(&self, id: &String) -> Result<Project, Error> {
         let obj_id = ObjectId::parse_str(id).unwrap();
         let filter = doc! {"_id": obj_id};
 
-        let col = MongoDB::colHelper::<Project>(&self, "project");
+        let col = DBMongo::colHelper::<Project>(&self, "project");
 
         let project_detail = col
             .find_one(filter, None)

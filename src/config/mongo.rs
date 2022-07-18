@@ -7,7 +7,7 @@ use mongodb::{
     Client, Collection, Database,
 };
 
-use crate::models::project_model::{Owner, Project};
+use crate::schemas::project_schema::{Owner, Project};
 
 pub struct DBMongo {
     db: Database,
@@ -49,7 +49,7 @@ impl DBMongo {
             .expect("Error creating owner");
 
         let new_owner = Owner {
-            _id: data.inserted_id.as_object_id(),
+            _id: Some(data.inserted_id.to_string()),
             name: new_owner.name.clone(),
             email: new_owner.email.clone(),
             phone: new_owner.phone.clone(),
@@ -114,7 +114,7 @@ impl DBMongo {
             .expect("Error creating project");
 
         let new_project = Project {
-            _id: data.inserted_id.as_object_id(),
+            _id: Some(data.inserted_id.to_string()),
             owner_id: new_project.owner_id.clone(),
             name: new_project.name.clone(),
             description: new_project.description.clone(),

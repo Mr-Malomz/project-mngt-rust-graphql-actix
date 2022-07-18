@@ -1,4 +1,4 @@
-mod models;
+mod schemas;
 mod handler;
 mod config;
 

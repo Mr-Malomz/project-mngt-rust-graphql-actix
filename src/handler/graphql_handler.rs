@@ -50,3 +50,7 @@ impl Query {
         Ok(projects)
     }
 }
+
+pub struct Mutation;
+
+impl Mutation {}

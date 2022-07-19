@@ -1,11 +1,10 @@
-use async_graphql::{Context, FieldResult, Object, Schema, EmptySubscription};
-
 use crate::{
     config::mongo,
     schemas::project_schema::{
         CreateOwner, CreateProject, FetchOwner, FetchProject, Owner, Project,
     },
 };
+use async_graphql::{Context, EmptySubscription, FieldResult, Object, Schema};
 
 struct Database {
     db: mongo::DBMongo,

@@ -27,8 +27,8 @@ impl DBMongo {
         DBMongo { db }
     }
 
-    fn colHelper<T>(dataSource: &Self, collectionName: &str) -> Collection<T> {
-        dataSource.db.collection(collectionName)
+    fn col_helper<T>(data_source: &Self, collection_name: &str) -> Collection<T> {
+        data_source.db.collection(collection_name)
     }
 
     //Owners logic
@@ -40,7 +40,7 @@ impl DBMongo {
             phone: new_owner.phone.clone(),
         };
 
-        let col = DBMongo::colHelper::<Owner>(&self, "owner");
+        let col = DBMongo::col_helper::<Owner>(&self, "owner");
 
         let data = col
             .insert_one(new_doc, None)
@@ -59,7 +59,7 @@ impl DBMongo {
     }
 
     pub async fn get_owners(&self) -> Result<Vec<Owner>, Error> {
-        let col = DBMongo::colHelper::<Owner>(&self, "owner");
+        let col = DBMongo::col_helper::<Owner>(&self, "owner");
 
         let mut cursors = col
             .find(None, None)
@@ -84,7 +84,7 @@ impl DBMongo {
         let obj_id = ObjectId::parse_str(id).unwrap();
         let filter = doc! {"_id": obj_id};
 
-        let col = DBMongo::colHelper::<Owner>(&self, "owner");
+        let col = DBMongo::col_helper::<Owner>(&self, "owner");
 
         let owner_detail = col
             .find_one(filter, None)
@@ -105,7 +105,7 @@ impl DBMongo {
             status: new_project.status.clone(),
         };
 
-        let col = DBMongo::colHelper::<Project>(&self, "project");
+        let col = DBMongo::col_helper::<Project>(&self, "project");
 
         let data = col
             .insert_one(new_doc, None)
@@ -125,7 +125,7 @@ impl DBMongo {
     }
 
     pub async fn get_projects(&self) -> Result<Vec<Project>, Error> {
-        let col = DBMongo::colHelper::<Project>(&self, "project");
+        let col = DBMongo::col_helper::<Project>(&self, "project");
 
         let mut cursors = col
             .find(None, None)
@@ -150,7 +150,7 @@ impl DBMongo {
         let obj_id = ObjectId::parse_str(id).unwrap();
         let filter = doc! {"_id": obj_id};
 
-        let col = DBMongo::colHelper::<Project>(&self, "project");
+        let col = DBMongo::col_helper::<Project>(&self, "project");
 
         let project_detail = col
             .find_one(filter, None)

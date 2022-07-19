@@ -1,29 +1,20 @@
-use async_graphql::{Context, FieldResult, Object};
+use async_graphql::{Context, FieldResult, Object, Schema, EmptySubscription};
 
 use crate::{
     config::mongo,
-    schemas::project_schema::{CreateOwner, FetchOwner, FetchProject, Owner, Project},
+    schemas::project_schema::{
+        CreateOwner, CreateProject, FetchOwner, FetchProject, Owner, Project,
+    },
 };
 
 struct Database {
     db: mongo::DBMongo,
 }
 
-struct Query;
+pub struct Query;
 
 #[Object(extends)]
 impl Query {
-    // async fn create_owner(&self, ctx: &Context<'_>, input: CreateOwner) -> FieldResult<Owner> {
-    //     let db = &ctx.data_unchecked::<Database>().db;
-    //     let new_owner = Owner {
-    //         _id: None,
-    //         email: input.email,
-    //         name: input.name,
-    //         phone: input.phone,
-    //     };
-    //     let owner = db.create_owner(new_owner).await.unwrap();
-    //     Ok(owner)
-    // }
     //owners query
     async fn owner(&self, ctx: &Context<'_>, input: FetchOwner) -> FieldResult<Owner> {
         let db = &ctx.data_unchecked::<Database>().db;
@@ -53,4 +44,37 @@ impl Query {
 
 pub struct Mutation;
 
-impl Mutation {}
+#[Object]
+impl Mutation {
+    //owner mutation
+    async fn create_owner(&self, ctx: &Context<'_>, input: CreateOwner) -> FieldResult<Owner> {
+        let db = &ctx.data_unchecked::<Database>().db;
+        let new_owner = Owner {
+            _id: None,
+            email: input.email,
+            name: input.name,
+            phone: input.phone,
+        };
+        let owner = db.create_owner(new_owner).await.unwrap();
+        Ok(owner)
+    }
+
+    async fn create_project(
+        &self,
+        ctx: &Context<'_>,
+        input: CreateProject,
+    ) -> FieldResult<Project> {
+        let db = &ctx.data_unchecked::<Database>().db;
+        let new_project = Project {
+            _id: None,
+            owner_id: input.owner,
+            name: input.name,
+            description: input.description,
+            status: input.status,
+        };
+        let project = db.create_project(new_project).await.unwrap();
+        Ok(project)
+    }
+}
+
+pub type ProjectSchema = Schema<Query, Mutation, EmptySubscription>;

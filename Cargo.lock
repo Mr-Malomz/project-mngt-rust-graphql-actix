@@ -312,7 +312,9 @@ dependencies = [
  "async-graphql-value",
  "async-stream",
  "async-trait",
+ "bson",
  "bytes",
+ "chrono",
  "fast_chemail",
  "fnv",
  "futures-util",
@@ -478,6 +480,7 @@ checksum = "a24ecf39f5a314493ede1bb015984735d41aa6aedb59cafb95492d40cd893330"
 dependencies = [
  "ahash",
  "base64",
+ "chrono",
  "hex",
  "indexmap",
  "lazy_static",

@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4"
-async-graphql = "4.0"
+async-graphql = { version = "4.0", features = ["bson", "chrono"] }
 async-graphql-actix-web = "4.0"
 serde = "1.0.136"
 dotenv = "0.15.0"

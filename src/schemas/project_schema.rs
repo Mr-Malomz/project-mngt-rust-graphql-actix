@@ -1,10 +1,12 @@
 use async_graphql::{Enum, InputObject, SimpleObject};
+use mongodb::bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 
 //owner schema
 #[derive(Debug, Clone, Serialize, Deserialize, SimpleObject)]
 pub struct Owner {
-    pub _id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub _id: Option<ObjectId>,
     pub name: String,
     pub email: String,
     pub phone: String,
@@ -19,7 +21,7 @@ pub struct CreateOwner {
 
 #[derive(InputObject)]
 pub struct FetchOwner {
-   pub _id: String,
+    pub _id: String,
 }
 
 //project schema
@@ -32,7 +34,8 @@ pub enum Status {
 
 #[derive(Debug, Clone, Serialize, Deserialize, SimpleObject)]
 pub struct Project {
-    pub _id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub _id: Option<ObjectId>,
     pub owner_id: String,
     pub name: String,
     pub description: String,
@@ -41,7 +44,7 @@ pub struct Project {
 
 #[derive(InputObject)]
 pub struct CreateProject {
-    pub owner: String,
+    pub owner_id: String,
     pub name: String,
     pub description: String,
     pub status: Status,
@@ -49,5 +52,5 @@ pub struct CreateProject {
 
 #[derive(InputObject)]
 pub struct FetchProject {
-   pub _id: String,
+    pub _id: String,
 }

@@ -45,11 +45,10 @@ impl DBMongo {
         let data = col
             .insert_one(new_doc, None)
             .await
-            .ok()
             .expect("Error creating owner");
 
         let new_owner = Owner {
-            _id: Some(data.inserted_id.to_string()),
+            _id: data.inserted_id.as_object_id(),
             name: new_owner.name.clone(),
             email: new_owner.email.clone(),
             phone: new_owner.phone.clone(),
@@ -64,14 +63,12 @@ impl DBMongo {
         let mut cursors = col
             .find(None, None)
             .await
-            .ok()
             .expect("Error getting list of owners");
 
         let mut owners: Vec<Owner> = Vec::new();
         while let Some(owner) = cursors
             .try_next()
             .await
-            .ok()
             .expect("Error mapping through cursor")
         {
             owners.push(owner)
@@ -89,7 +86,6 @@ impl DBMongo {
         let owner_detail = col
             .find_one(filter, None)
             .await
-            .ok()
             .expect("Error getting owner's detail");
 
         Ok(owner_detail.unwrap())
@@ -110,11 +106,10 @@ impl DBMongo {
         let data = col
             .insert_one(new_doc, None)
             .await
-            .ok()
             .expect("Error creating project");
 
         let new_project = Project {
-            _id: Some(data.inserted_id.to_string()),
+            _id: data.inserted_id.as_object_id(),
             owner_id: new_project.owner_id.clone(),
             name: new_project.name.clone(),
             description: new_project.description.clone(),
@@ -130,14 +125,12 @@ impl DBMongo {
         let mut cursors = col
             .find(None, None)
             .await
-            .ok()
             .expect("Error getting list of projects");
 
         let mut projects: Vec<Project> = Vec::new();
         while let Some(project) = cursors
             .try_next()
             .await
-            .ok()
             .expect("Error mapping through cursor")
         {
             projects.push(project)
@@ -155,7 +148,6 @@ impl DBMongo {
         let project_detail = col
             .find_one(filter, None)
             .await
-            .ok()
             .expect("Error getting project's detail");
 
         Ok(project_detail.unwrap())

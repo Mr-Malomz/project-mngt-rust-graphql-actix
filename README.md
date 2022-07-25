@@ -6,4 +6,4 @@ This repository shows the source code for creating a GraphQL endpoint that suppo
 
 Article Link
 
-[Article Link]()
+[Article Link](https://dev.to/hackmamba/create-a-graphql-powered-project-management-endpoint-in-rust-and-mongodb-actix-web-version-3j1)

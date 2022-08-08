@@ -16,10 +16,8 @@ pub struct DBMongo {
 impl DBMongo {
     pub async fn init() -> Self {
         dotenv().ok();
-        let uri = match env::var("MONGOURI") {
-            Ok(v) => v.to_string(),
-            Err(_) => format!("Error loading env variable"),
-        };
+        let uri = env::var("MONGOURI")
+            .expect("error loading env variable");
         let client = Client::with_uri_str(uri)
             .await
             .expect("error connecting to database");

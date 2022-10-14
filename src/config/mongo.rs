@@ -152,4 +152,22 @@ impl DBMongo {
 
         Ok(project_detail.unwrap())
     }
+
+    pub async fn user_projects(&self, _owner_id: &String) -> Result<Vec<Project>, Error> {
+        let filter = doc! {"owner_id": _owner_id};
+        let col = DBMongo::col_helper::<Project>(&self, "project");
+        let mut cursors = col
+            .find(filter, None)
+            .await
+            .expect("Error getting list of projects");
+        let mut projects: Vec<Project> = Vec::new();
+        while let Some(project) = cursors
+            .try_next()
+            .await
+            .expect("Error mapping through cursor")
+        {
+            projects.push(project)
+        }
+        Ok(projects)
+    }
 }

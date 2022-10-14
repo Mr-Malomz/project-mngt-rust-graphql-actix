@@ -35,6 +35,12 @@ impl Query {
         let projects = db.get_projects().await.unwrap();
         Ok(projects)
     }
+
+    async fn get_user_projects(&self, ctx: &Context<'_>, input: FetchProject) -> FieldResult<Vec<Project>> {
+        let db = &ctx.data_unchecked::<DBMongo>();
+        let projects = db.user_projects(&input._id).await.unwrap();
+        Ok(projects)
+    }
 }
 
 pub struct Mutation;

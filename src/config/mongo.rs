@@ -170,4 +170,25 @@ impl DBMongo {
         }
         Ok(projects)
     }
+
+    pub async fn project_owner(&self, id: &String) -> Result<Owner, Error> {
+        let project_obj_id = ObjectId::parse_str(id).unwrap();
+        let filter = doc! {"_id": project_obj_id};
+        let col = DBMongo::col_helper::<Project>(&self, "project");
+        let project_detail = col
+            .find_one(filter, None)
+            .await
+            .expect("Error getting project's detail");
+
+        let owner_id = project_detail.unwrap().owner_id;
+        let owner_obj_id = ObjectId::parse_str(owner_id).unwrap();
+        let owner_filter = doc! {"_id": owner_obj_id};
+        let col = DBMongo::col_helper::<Owner>(&self, "owner");
+        let owner_detail = col
+            .find_one(owner_filter, None)
+            .await
+            .expect("Error getting owner's detail");
+
+        Ok(owner_detail.unwrap())
+    }
 }
